@@ -7,9 +7,11 @@ import {
   FaTimes,
 } from "react-icons/fa";
 import { useState } from "react";
+import Modal from "./Modal";
 
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -22,6 +24,14 @@ const NavBar = () => {
     { path: "/blogs", link: "Blogs" },
     { path: "/contact", link: "Contacts" },
   ];
+  //modal details
+  const opnModal = () => {
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <>
       <header className="bg-black text-white fixed top-0 left-0 right-0">
@@ -59,10 +69,13 @@ const NavBar = () => {
             <a href="/" className="hover:text-orange-600">
               <FaTwitter />
             </a>
-            <button className="bg-orange-600 px-6 py-2 font-medium rounded hover:bg-white hover:text-orange-500 transition-all duration-200 ease-in">
+            <button onClick={opnModal} className="bg-orange-600 px-6 py-2 font-medium rounded hover:bg-white hover:text-orange-500 transition-all duration-200 ease-in">
               Login
             </button>
           </div>
+          {/* Our modal component is here  */}
+          <Modal isOpen={isModalOpen} onClose={closeModal} />
+
           {/* mobile menu btn,display mobile screen */}
           <div className="md:hidden">
             <button onClick={toggleMenu} className="cursor-pointer">
@@ -85,13 +98,17 @@ const NavBar = () => {
           >
             {navItems.map(({ path, link }) => (
               <li className="text-black" key={path}>
-                <NavLink className={({ isActive, isPending }) =>
+                <NavLink
+                  className={({ isActive, isPending }) =>
                     isActive
                       ? "text-orange-500 underline underline-offset-4"
                       : isPending
                       ? "pending"
                       : ""
-                  } onClick={toggleMenu} to={path}>
+                  }
+                  onClick={toggleMenu}
+                  to={path}
+                >
                   {link}
                 </NavLink>
               </li>
